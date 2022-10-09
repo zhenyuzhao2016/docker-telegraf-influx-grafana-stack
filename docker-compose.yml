@@ -6,16 +6,18 @@ services:
     - ./telegraf/etc/telegraf.conf:/etc/telegraf/telegraf.conf:ro
     depends_on:
       - influxdb
-    links:
-      - influxdb
-    ports:
-    - '127.0.0.1:8125:8125/udp'
+    network_mode: host
+      # links:
+      #- influxdb
+      #    ports:
+      #    - '127.0.0.1:8125:8125/udp'
 
   influxdb:
     image: influxdb:1.8-alpine
     env_file: configuration.env
-    ports:
-      - '127.0.0.1:8086:8086'
+    network_mode: host
+      #    ports:
+      #      - '127.0.0.1:8086:8086'
     volumes:
       - ./:/imports
       - influxdb_data:/var/lib/influxdb
@@ -25,10 +27,11 @@ services:
     depends_on:
       - influxdb
     env_file: configuration.env
-    links:
-      - influxdb
-    ports:
-      - '127.0.0.1:3000:3000'
+    network_mode: host
+      #    links:
+      #     - influxdb
+      #    ports:
+      #- '3000:3000'
     volumes:
       - grafana_data:/var/lib/grafana
       - ./grafana/provisioning/:/etc/grafana/provisioning/
